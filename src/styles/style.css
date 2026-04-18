@@ -1,0 +1,39 @@
+/* Font used : DM Sans */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-display: "DM Sans", sans-serif;
+}
+
+:root {
+  --border-color: #4D5562;
+  --text-color: #F9FAFB;
+  --bg-color: #040711;
+  --translate-color: #263FA9;
+  --translate-border: #7CA9F3;
+  --text-bg-color: #D2D5DA;
+  --left-card: #212936CC;
+  --right-card: #121826CC;
+}
+
+/* * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+/* body {
+  height: 100vh;
+} */
+
+/* .author-info {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 16px;
+  color: rgb(55, 65, 81);
+}
+
+.author-info a {
+  text-decoration: none;
+} */
