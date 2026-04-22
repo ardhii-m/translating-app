@@ -3,6 +3,10 @@ import BottomButtons from "./BottomButtons";
 import TranslateIcon from "../assets/Sort_alfa.svg";
 import swapIcon from "../assets/Horizontal_top_left_main.svg";
 import { getTranslation } from "../utils/network-data";
+import InputArea from "./InputArea";
+import OutputArea from "./OutputArea";
+import LangSelector from "./LangSelector";
+import SwapButton from "./SwapButton";
 
 const LANGUAGES = [
   { label: "English", code: "en" },
@@ -17,7 +21,9 @@ function TranslateForm() {
   const [targetLang, setTargetLang] = useState("fr");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => { translateHandler(); }, []);
+  useEffect(() => {
+    translateHandler();
+  }, []);
 
   async function translateHandler() {
     if (!inputText.trim()) return;
@@ -42,33 +48,29 @@ function TranslateForm() {
     <section className="grid grid-cols-1 md:grid-cols-2 gap-2.5 m-18 w-full p-4">
       <div className="w-full bg-left-card text-(--text-color) border border-(--border-color) rounded-2xl p-4">
         <div className="card-body">
-          <div className="flex gap-3 font-semibold h-10 items-center mb-4">
-            <button onClick={() => setSourceLang("autodetect")}
-              className={sourceLang === "autodetect" ? "bg-(--border-color) px-3 py-1 rounded-xl" : ""}>Detect Language</button>
-            {LANGUAGES.map(({ label, code }) => (
-              <button key={code} onClick={() => setSourceLang(code)}
-                className={sourceLang === code ? "bg-(--border-color) px-3 py-1 rounded-xl" : ""}>
-                {label}
-              </button>
-            ))}
+          <div className="flex justify-between items-center mb-4">
+            <LangSelector
+              languages={LANGUAGES}
+              selected={sourceLang}
+              onSelect={setSourceLang}
+              showAuto
+            />
           </div>
           <div className="border-t border-(--border-color) mb-4" />
-          <textarea
-            className="resize-none h-40 w-full text-(--text-color) rounded-md bg-transparent font-semibold invalid:outline-none"
-            placeholder="Enter text..."
-            spellCheck={false}
-            maxLength={500}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-          />
-          <div className="pt-4 text-right text-sm text-(--text-color)">{inputText.length}/500</div>
+
+          <InputArea value={inputText} onChange={setInputText} />
+          
           <div className="flex justify-between items-center mt-4">
-            <BottomButtons />
+            <BottomButtons
+              onCopy={() => navigator.clipboard.writeText(inputText)}
+            />
             <button
               onClick={translateHandler}
               disabled={loading}
-              className="flex items-center gap-2 border rounded-xl font-semibold py-3 px-6 border-(--translate-border) bg-(--translate-color) cursor-pointer disabled:opacity-50">
-              <img src={TranslateIcon} />{loading ? "Translating..." : "Translate"}
+              className="flex items-center gap-2 border rounded-xl font-semibold p-2 border-(--translate-border) bg-(--translate-color) cursor-pointer disabled:opacity-50"
+            >
+              <img src={TranslateIcon} />
+              {loading ? "Translating..." : "Translate"}
             </button>
           </div>
         </div>
@@ -77,22 +79,25 @@ function TranslateForm() {
       <div className="w-full bg-(--right-card) text-(--text-color) border border-(--border-color) rounded-2xl p-4">
         <div className="card-body">
           <div className="flex justify-between items-center mb-4">
-            <div className="flex gap-3 font-semibold h-10 items-center">
-              {LANGUAGES.map(({ label, code }) => (
-                <button key={code} onClick={() => setTargetLang(code)}
-                  className={targetLang === code ? "bg-(--border-color) px-3 py-1 rounded-xl" : ""}>
-                  {label}
-                </button>
-              ))}
-            </div>
-            <button onClick={swapHandler} disabled={sourceLang === "autodetect"} className="flex items-center justify-center cursor-pointer w-10 h-10 rounded-xl border border-(--border-color) disabled:opacity-30 disabled:cursor-not-allowed">
-              <img src={swapIcon} alt="Switch Language" />
-            </button>
+            <LangSelector
+              languages={LANGUAGES}
+              selected={targetLang}
+              onSelect={setTargetLang}
+            />
+            <SwapButton
+              onSwap={swapHandler}
+              disabled={sourceLang === "autodetect"}
+              icon={swapIcon}
+            />
           </div>
           <div className="border-t border-(--border-color) mb-4" />
-          <div className="h-40 w-full font-bold">{outputText}</div>
+          
+          <OutputArea value={outputText} />
+
           <div className="flex justify-between items-center mt-4">
-            <BottomButtons />
+            <BottomButtons
+              onCopy={() => navigator.clipboard.writeText(outputText)}
+            />
           </div>
         </div>
       </div>
