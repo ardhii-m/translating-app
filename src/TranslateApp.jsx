@@ -1,5 +1,5 @@
 import TranslateForm from "./components/TranslateForm";
-import Misc from "./components/misc";
+import Misc from "./components/Misc";
 import logo from "./assets/logo.svg";
 
 function TranslateApp() {
